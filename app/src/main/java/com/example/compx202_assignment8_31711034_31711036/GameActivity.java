@@ -22,20 +22,23 @@ public class GameActivity extends AppCompatActivity {
         private float speedY;
         private int radius;
         private Paint paint;
+        private float xMax;
+        private float yMax;
 
         private int targetR;
         private int obsR;
+        private int loseR;
 
         private float targetX;
         private float targetY;
 
         private float[] obsLoseX;
         private float[] obsLoseY;
-        private int speedObsIn;
+        private  int[] speedObsLose;
 
         private float[] obsInX;
         private float[] obsInY;
-
+        private int speedObsIn;
 
         GestureDetector gestureDetector;
 
@@ -45,16 +48,21 @@ public class GameActivity extends AppCompatActivity {
             y=1300;
             speedX = 0;
             speedY = 0;
-            radius = 30;
+            radius = 50;
 
             targetX=500;
             targetY=200;
-            targetR=70;
+            targetR=100;
 
             obsR=40;
-            obsInX= new float[]{40, 600};
-            obsInY= new float[]{100,1200};
-            speedObsIn = 15;
+            obsInX= new float[]{40, 1000,400,800};
+            obsInY= new float[]{100,1800,1500,500};
+            speedObsIn =5;
+
+            loseR=70;
+            obsLoseX=new float[]{70,500};
+            obsLoseY=new float[]{150,1000};
+            speedObsLose = new int[]{10,10};
 
             paint = new Paint();
             gestureDetector = new GestureDetector(context, new MyGestureListener());
@@ -83,39 +91,86 @@ public class GameActivity extends AppCompatActivity {
             paint.setColor(getColor(R.color.target));
             canvas.drawCircle(targetX,targetY,targetR,paint);
 
+//            int a0x,a0y,a1x,a1y;
+//            a0x=a0y=a1x=a1y=speedObsIn;
             obsInX[0]+=speedObsIn;
-            obsInX[1]-=speedObsIn;
             obsInY[0]+=speedObsIn;
+            obsInX[1]-=speedObsIn;
             obsInY[1]-=speedObsIn;
-//            int a = speedObsIn;
-            for(int p=0;p<2;p++){
-//                obsInX[p]+=speedObsIn;
-//                obsInY[p]+=speedObsIn;
+            obsInX[2]+=speedObsIn;
+            obsInY[2]-=speedObsIn;
+            obsInX[3]-=speedObsIn;
+            obsInY[3]+=speedObsIn;
+
+            for(int p=0;p<4;p++){
+
                 if (obsInX[p] > getWidth()) {
 //                    obsInY[p]=getHeight()-((obsInX[p]+speedObsIn)%getHeight());
-                    obsInX[p]-=2*speedObsIn;
+                    obsInX[p]=0;
                 } else if (obsInX[p] < 0) {
 //                    obsInY[p] = getHeight()-((-obsInY[p]+speedObsIn)%getHeight());
-                    obsInX[p]+=2*speedObsIn;
+                    obsInX[p]=getWidth();
                 }
                 if (obsInY[p] > getHeight()) {
 //                    obsInY[p]=getHeight()-((obsInX[p]+speedObsIn)%getHeight());
-                    obsInY[p]-=2*speedObsIn;
+                    obsInY[p]=0;
                 } else if (obsInY[p] < 0) {
 //                    obsInY[p] = getHeight()-((-obsInY[p]+speedObsIn)%getHeight());
-                    obsInY[p]+=2*speedObsIn;
+                    obsInY[p]=getHeight();
                 }
 
                 paint.setColor(Color.GREEN);
                 canvas.drawCircle(obsInX[p],obsInY[p],obsR,paint);
             }
 
-//            for(int p=0;p<2;p++) {
-//                paint.setColor(Color.BLUE);
-//                canvas.drawCircle(obsInX[p],obsInY[p],obsR,paint);
-//            }
+            for(int p=0;p<2;p++){
+                obsLoseX[p]+=speedObsLose[p];
+                obsLoseY[p]+=speedObsLose[p];
+
+                float[] xBackup = new float[2];
+                float[] yBackup = new float[2];
+                xBackup[p] = obsLoseX[p];
+                yBackup[p] = obsLoseY[p];
+
+                // Handle the cases where the ball goes off the screen
+                if (obsLoseX[p] > getWidth()) {
+                    obsLoseX[p] = getWidth();
+                    obsLoseX[p] = xBackup[p];
+                    //Speed reverse
+                    speedObsLose[p] = 0 - speedObsLose[p];
+                } else if (obsLoseX[p] < 0) {
+                    obsLoseX[p] = 0;
+                    obsLoseX[p] = xBackup[p];
+                    //Speed reverse
+                    speedObsLose[p] = 0-speedObsLose[p];
+                }
+
+                if (obsLoseY[p] > getHeight()) {
+                    obsLoseY[p] = getHeight();
+                    obsLoseY[p] = yBackup[p];
+                    //Speed reverse
+                    speedObsLose[p] = 0 - speedObsLose[p];
+                } else if (obsLoseY[p] < 0) {
+                    obsLoseY[p] = 0;
+                    obsLoseY[p] = yBackup[p];
+                    //Speed reverse
+                    speedObsLose[p] = 0 - speedObsLose[p];
+                }
+
+                paint.setColor(Color.GRAY);
+                canvas.drawCircle(obsLoseX[p],obsLoseY[p],loseR,paint);
+
+            }
 
             invalidate();
+        }
+
+        // Use onSizeChange to get information on screen size and set the ball on a different initial position
+        @Override
+        protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+            super.onSizeChanged(w, h, oldw, oldh);
+            xMax=w;
+            yMax=h;
         }
 
         @Override
