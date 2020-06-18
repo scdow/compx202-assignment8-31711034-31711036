@@ -8,4 +8,5 @@
     <color name="buttonbg">#f2d84d</color>
     <color name="title">#ee781e</color>
     <color name="ball">#f2d84d</color>
+    <color name="target">#ee781e</color>
 </resources>
