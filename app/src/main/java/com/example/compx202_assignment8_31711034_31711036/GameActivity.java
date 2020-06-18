@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class GameActivity extends AppCompatActivity {
+    private int score;
     public class GraphicView extends View {
         private float x;
         private float y;
@@ -38,7 +40,12 @@ public class GameActivity extends AppCompatActivity {
 
         private float[] obsInX;
         private float[] obsInY;
-        private int speedObsIn;
+        private int[] speedObsInX;
+        private int[] speedObsInY;
+
+        private double[] distanceIn = new double[4];
+        private double[] distanceEnd;
+        private double[] distanceTarget;
 
         GestureDetector gestureDetector;
 
@@ -48,24 +55,26 @@ public class GameActivity extends AppCompatActivity {
             y=1300;
             speedX = 0;
             speedY = 0;
-            radius = 50;
+            radius = 35;
 
             targetX=500;
             targetY=200;
-            targetR=100;
+            targetR=60;
 
             obsR=40;
             obsInX= new float[]{40, 1000,400,800};
             obsInY= new float[]{100,1800,1500,500};
-            speedObsIn =5;
+            speedObsInX =new int[]{2,5,3,7};
+            speedObsInY =new int[]{5,2,7,3};
 
-            loseR=70;
+            loseR=30;
             obsLoseX=new float[]{70,500};
             obsLoseY=new float[]{150,1000};
-            speedObsLose = new int[]{10,10};
+            speedObsLose = new int[]{2,2};
 
             paint = new Paint();
             gestureDetector = new GestureDetector(context, new MyGestureListener());
+
         }
 
         @Override
@@ -93,16 +102,42 @@ public class GameActivity extends AppCompatActivity {
 
 //            int a0x,a0y,a1x,a1y;
 //            a0x=a0y=a1x=a1y=speedObsIn;
-            obsInX[0]+=speedObsIn;
-            obsInY[0]+=speedObsIn;
-            obsInX[1]-=speedObsIn;
-            obsInY[1]-=speedObsIn;
-            obsInX[2]+=speedObsIn;
-            obsInY[2]-=speedObsIn;
-            obsInX[3]-=speedObsIn;
-            obsInY[3]+=speedObsIn;
 
+//            obsInX[0]+=speedObsIn;
+//            obsInY[0]+=speedObsIn;
+//            obsInX[1]-=speedObsIn;
+//            obsInY[1]-=speedObsIn;
+//            obsInX[2]+=speedObsIn;
+//            obsInY[2]-=speedObsIn;
+//            obsInX[3]-=speedObsIn;
+//            obsInY[3]+=speedObsIn;
+//            TextView scoreText = (TextView)findViewById(R.id.scoreText);
             for(int p=0;p<4;p++){
+
+                obsInX[p]+=speedObsInX[p];
+                obsInY[p]+=speedObsInY[p];
+
+                distanceIn[p] = Math.sqrt(((x - obsInX[p]) * (x - obsInX[p])) + ((y - obsInY[p]) * (y - obsInY[p])));
+                if (distanceIn[p] < radius + obsR){
+                    score+=1;
+                    Log.i("MYSCORE", "Score now: "+score);
+//                    String scoreStr = String.valueOf(score);
+//                    scoreText.setText(scoreStr);
+                    if(speedX/speedObsInX[p]>0){
+                        speedX=-speedX;
+                    }
+                    else if(speedX/speedObsInX[p]<=0){
+//                        speedX=-speedX;
+                        speedObsInX[p]=-speedObsInX[p];
+                    }
+                    if(speedY/speedObsInY[p]>0){
+                        speedY=-speedY;
+                    }
+                    else if(speedY/speedObsInY[p]<=0){
+                        speedY=-speedY;
+//                        speedObsInY[p]=-speedObsInY[p];
+                    }
+                }
 
                 if (obsInX[p] > getWidth()) {
 //                    obsInY[p]=getHeight()-((obsInX[p]+speedObsIn)%getHeight());
@@ -119,7 +154,7 @@ public class GameActivity extends AppCompatActivity {
                     obsInY[p]=getHeight();
                 }
 
-                paint.setColor(Color.GREEN);
+                paint.setColor(getColor(R.color.colorAccent));
                 canvas.drawCircle(obsInX[p],obsInY[p],obsR,paint);
             }
 
@@ -157,9 +192,8 @@ public class GameActivity extends AppCompatActivity {
                     speedObsLose[p] = 0 - speedObsLose[p];
                 }
 
-                paint.setColor(Color.GRAY);
+                paint.setColor(getColor(R.color.obsLose));
                 canvas.drawCircle(obsLoseX[p],obsLoseY[p],loseR,paint);
-
             }
 
             invalidate();
@@ -210,8 +244,8 @@ public class GameActivity extends AppCompatActivity {
                 else{
                     Log.i("MYLOG", "Move up");
                 }
-                speedX=velocityX/100;
-                speedY=velocityY/100;
+                speedX=velocityX/200;
+                speedY=velocityY/200;
                 return true;
             }
         }
@@ -229,9 +263,17 @@ public class GameActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         getWindow().getDecorView().setSystemUiVisibility(uiOptions);
 
+//        TextView scoreText = (TextView)findViewById(R.id.scoreText);
+//        String scoreStr = String.valueOf(score);
+//        scoreText.setText(scoreStr);
+
         GraphicView gv = new GraphicView(this);
         ConstraintLayout rootView = (ConstraintLayout)findViewById(R.id.rootView);
         rootView.addView(gv);
+
+        TextView scoreText = (TextView)findViewById(R.id.scoreText);
+        String scoreStr = String.valueOf(score);
+        scoreText.setText(scoreStr);
     }
 }
 
