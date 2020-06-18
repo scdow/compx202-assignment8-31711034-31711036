@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +23,13 @@ public class MainActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         getWindow().getDecorView().setSystemUiVisibility(uiOptions);
 
+        //get extra data from intent(String)
+        Intent intent = getIntent();
+        String user = intent.getStringExtra("username");
+        //set textview text to the string
+        TextView tv = (TextView)findViewById(R.id.mainTitleHiUsername);
+        tv.setText(user);
+
     }
 
     public void onClickButtonStart(View view){
@@ -33,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
     public void onClickButtonScore(View view){
 //        Toast.makeText(this, "message", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, ScoreActivity.class);
+        startActivity(intent);
+
+    }
+    public void onClickButtonLogout(View view){
+//        Toast.makeText(this, "message", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, LogActivity.class);
         startActivity(intent);
 
     }

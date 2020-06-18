@@ -3,10 +3,11 @@
     <string name="gamename">COLLIDER</string>
     <string name="developer">Developer: Lu Danqi, Shi Peijia</string>
     <string name="login">Log in</string>
+    <string name="logout">Log out</string>
     <string name="buttonStart">Start</string>
     <string name="buttonScore">Score</string>
     <string name="user">User:</string>
-    <string name="hi">Hi! User: xxx</string>
+    <string name="hi">Welcome, </string>
 
     <string name="score">SCORE</string>
     <string name="yourscore">Your Score:</string>
