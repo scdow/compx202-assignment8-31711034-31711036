@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
     public void onClickButtonScore(View view){
 //        Toast.makeText(this, "message", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, ScoreActivity.class);
+
+        //get Edittext
+        TextView tv = (TextView) findViewById(R.id.mainTitleHiUsername);
+        String username = tv.getText().toString();
+        intent.putExtra("username",username);
+
         startActivity(intent);
 
     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,8 +34,14 @@ public class LogActivity extends AppCompatActivity {
         //get Edittext
         EditText et = (EditText)findViewById(R.id.UsernameInput);
         String username = et.getText().toString();
-        intent.putExtra("username",username);
-
+        if(username.length()==0){
+            Toast.makeText(this, "Username is Admin", Toast.LENGTH_SHORT).show();
+            username = "Admin";
+            intent.putExtra("username",username);
+        }
+        else{
+            intent.putExtra("username",username);
+        }
 
         startActivity(intent);
     }

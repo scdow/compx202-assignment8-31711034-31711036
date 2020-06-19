@@ -43,7 +43,6 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_margin="20dp"
-                android:text="@string/developer"
                 android:textSize="15dp"
                 android:textColor="@color/scoretext"/>
         </LinearLayout>
