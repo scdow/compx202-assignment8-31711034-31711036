@@ -20,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class GameActivity extends AppCompatActivity {
     private int score;
+
     public class GraphicView extends View {
         boolean judgeLose=false;
         private float x;
@@ -53,6 +54,9 @@ public class GameActivity extends AppCompatActivity {
 
         GestureDetector gestureDetector;
 
+//        TextView scoreText = (TextView)findViewById(R.id.scoreText);
+//        String scoreStr = String.valueOf(score);
+
         public GraphicView(Context context) {
             super(context);
             x=300;
@@ -78,12 +82,16 @@ public class GameActivity extends AppCompatActivity {
 
             paint = new Paint();
             gestureDetector = new GestureDetector(context, new MyGestureListener());
-
         }
 
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
+
+            paint.setTextSize(50);
+            paint.setColor(getColor(R.color.ball));
+            canvas.drawText(""+score, 250, 55, paint);
+
             x+=speedX;
             y+=speedY;
             //            make ball always stay on screen
@@ -125,8 +133,7 @@ public class GameActivity extends AppCompatActivity {
                 if (distanceIn[p] < radius + obsR){
                     score+=1;
                     Log.i("MYSCORE", "Score now: "+score);
-//                    String scoreStr = String.valueOf(score);
-//                    scoreText.setText(scoreStr);
+
                     if(speedX/speedObsInX[p]>0){
                         speedX=-speedX;
                     }
@@ -275,7 +282,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void showGameLoseDialog() {
-            new AlertDialog.Builder(this).setTitle("Sorry").setMessage("You Lose.")
+            new AlertDialog.Builder(this).setTitle("Sorry").setMessage("You Lose.  " +"Score: "+score+" to be 0")
                     .setPositiveButton("OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
@@ -286,7 +293,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void showGameWinDialog() {
-        new AlertDialog.Builder(this).setTitle("Congratulations").setMessage("You Win!")
+        new AlertDialog.Builder(this).setTitle("Congratulations").setMessage("You Win!  "+"Score: "+score)
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
@@ -316,9 +323,9 @@ public class GameActivity extends AppCompatActivity {
         ConstraintLayout rootView = (ConstraintLayout)findViewById(R.id.rootView);
         rootView.addView(gv);
 
-        TextView scoreText = (TextView)findViewById(R.id.scoreText);
-        String scoreStr = String.valueOf(score);
-        scoreText.setText(scoreStr);
+//        TextView scoreText = (TextView)findViewById(R.id.scoreText);
+//        String scoreStr = String.valueOf(score);
+//        scoreText.setText(scoreStr);
     }
 }
 
