@@ -1,6 +1,8 @@
 package com.example.compx202_assignment8_31711034_31711036;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,12 +14,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class GameActivity extends AppCompatActivity {
     private int score;
     public class GraphicView extends View {
+        boolean judgeLose=false;
         private float x;
         private float y;
         private float speedX;
@@ -44,8 +48,8 @@ public class GameActivity extends AppCompatActivity {
         private int[] speedObsInY;
 
         private double[] distanceIn = new double[4];
-        private double[] distanceEnd;
-        private double[] distanceTarget;
+        private double[] distanceEnd = new double[2];
+        private double distanceTarget;
 
         GestureDetector gestureDetector;
 
@@ -162,6 +166,15 @@ public class GameActivity extends AppCompatActivity {
                 obsLoseX[p]+=speedObsLose[p];
                 obsLoseY[p]+=speedObsLose[p];
 
+                distanceEnd[p] = Math.sqrt(((x - obsLoseX[p]) * (x - obsLoseX[p])) + ((y - obsLoseY[p]) * (y - obsLoseY[p])));
+                if (distanceEnd[p] < radius + loseR){
+                    Log.i("MYSCORE", "Lose: ");
+                    judgeLose=true;
+//                    Intent intent = new Intent(this, LoseActivity.class);
+//                    startActivity(intent);
+                    showGameLoseDialog();
+                }
+
                 float[] xBackup = new float[2];
                 float[] yBackup = new float[2];
                 xBackup[p] = obsLoseX[p];
@@ -196,7 +209,17 @@ public class GameActivity extends AppCompatActivity {
                 canvas.drawCircle(obsLoseX[p],obsLoseY[p],loseR,paint);
             }
 
-            invalidate();
+            distanceTarget = Math.sqrt(((x - targetX) * (x - targetX)) + ((y - targetY) * (y - targetY)));
+            if (distanceTarget < radius + targetR){
+                Log.i("MYSCORE", "Win: ");
+//                    Intent intent = new Intent(this, LoseActivity.class);
+//                    startActivity(intent);
+                    showGameWinDialog();
+            }
+
+            if((distanceTarget > radius + targetR)&&(judgeLose==false)){
+                invalidate();
+            }
         }
 
         // Use onSizeChange to get information on screen size and set the ball on a different initial position
@@ -249,6 +272,28 @@ public class GameActivity extends AppCompatActivity {
                 return true;
             }
         }
+    }
+
+    private void showGameLoseDialog() {
+            new AlertDialog.Builder(this).setTitle("Sorry").setMessage("You Lose.")
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                    finish();
+                                }
+                            }).show();
+    }
+
+    private void showGameWinDialog() {
+        new AlertDialog.Builder(this).setTitle("Congratulations").setMessage("You Win!")
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton) {
+                                finish();
+                            }
+                        }).show();
     }
 
     protected void onCreate(Bundle savedInstanceState) {
