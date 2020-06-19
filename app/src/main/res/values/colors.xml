@@ -11,4 +11,5 @@
     <color name="buttonSocrebg">#ee781e</color>
     <color name="ball">#f2d84d</color>
     <color name="target">#ee781e</color>
+    <color name="obsLose">#998C82</color>
 </resources>
