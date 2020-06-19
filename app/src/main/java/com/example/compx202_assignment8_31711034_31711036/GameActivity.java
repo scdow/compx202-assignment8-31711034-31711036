@@ -299,6 +299,13 @@ public class GameActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
                                 finish();
+                                //get extra data from intent(String)
+                                Intent intent = getIntent();
+                                String user = intent.getStringExtra("username");
+                                //set intent
+                               Intent intent2 = new Intent(GameActivity.this,ScoreActivity.class);
+                               intent2.putExtra("username_score",user+score);
+                                startActivity(intent);
                             }
                         }).show();
     }

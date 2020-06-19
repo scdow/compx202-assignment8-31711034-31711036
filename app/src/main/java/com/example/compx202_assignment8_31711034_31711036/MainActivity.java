@@ -37,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
     public void onClickButtonStart(View view){
 //        Toast.makeText(this, "message", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, GameActivity.class);
+
+        //get Edittext
+        TextView tv = (TextView) findViewById(R.id.mainTitleHiUsername);
+        String username = tv.getText().toString();
+        intent.putExtra("username",username);
+
         startActivity(intent);
 
     }
