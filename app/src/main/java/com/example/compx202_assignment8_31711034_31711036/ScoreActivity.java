@@ -24,8 +24,8 @@ public class ScoreActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(uiOptions);
 
         //get extra data from intent(String)
-        Intent intent = getIntent();
-        String user = intent.getStringExtra("username");
+        Intent intentA = getIntent();
+        String user = intentA.getStringExtra("username");
         //set textview text to the string
         TextView tv = (TextView)findViewById(R.id.mainTitleUserName);
         tv.setText(user);
@@ -34,6 +34,7 @@ public class ScoreActivity extends AppCompatActivity {
         String  userNow = intentNow.getStringExtra("user");
 //        TextView tv = (TextView)findViewById(R.id.mainTitleUserName);
         tv.setText(userNow);
+
 
         TextView tv1 = (TextView)findViewById(R.id.mainTitleScoreNumber);
         int scoreNow =intentNow.getIntExtra("score",0);
@@ -45,10 +46,10 @@ public class ScoreActivity extends AppCompatActivity {
             listArray[i]="need more infomation";
         }
 
-        Intent intentStr1 = getIntent();
-        String  str1 = "";
-        str1=intentStr1.getStringExtra("username_score");
-        listArray[0] = str1;
+//        Intent intentStr1 = getIntent();
+//        String  str1 = "";
+//        str1=intentStr1.getStringExtra("username_score");
+//        listArray[0] = str1;
 
         // Create a new ArrayAdapter<String>
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
