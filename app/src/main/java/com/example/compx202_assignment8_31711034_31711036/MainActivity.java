@@ -62,6 +62,5 @@ public class MainActivity extends AppCompatActivity {
 //        Toast.makeText(this, "message", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, LogActivity.class);
         startActivity(intent);
-
     }
 }

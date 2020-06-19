@@ -68,7 +68,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_margin="20dp"
-                android:text="@string/developer"
+                android:text=""
                 android:textSize="15dp"
                 android:textColor="@color/scoretext"/>
         </LinearLayout>
@@ -93,8 +93,8 @@
             <ListView
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </ListView>
+                android:layout_height="wrap_content"
+                android:background="#E7F2D84D"></ListView>
 
         </LinearLayout>
 

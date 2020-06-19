@@ -3,6 +3,8 @@ package com.example.compx202_assignment8_31711034_31711036;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -27,5 +29,35 @@ public class ScoreActivity extends AppCompatActivity {
         //set textview text to the string
         TextView tv = (TextView)findViewById(R.id.mainTitleUserName);
         tv.setText(user);
+
+        Intent intentNow = getIntent();
+        String  userNow = intentNow.getStringExtra("user");
+//        TextView tv = (TextView)findViewById(R.id.mainTitleUserName);
+        tv.setText(userNow);
+
+        TextView tv1 = (TextView)findViewById(R.id.mainTitleScoreNumber);
+        int scoreNow =intentNow.getIntExtra("score",0);
+        String scoreNowStr = String.valueOf(scoreNow);
+        tv1.setText(scoreNowStr);
+
+        String[] listArray = new String[5];
+        for (int i = 0;i<5;i++){
+            listArray[i]="need more infomation";
+        }
+
+        Intent intentStr1 = getIntent();
+        String  str1 = "";
+        str1=intentStr1.getStringExtra("username_score");
+        listArray[0] = str1;
+
+        // Create a new ArrayAdapter<String>
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, listArray);
+
+        // Get the ListView
+        ListView lv = (ListView) findViewById(R.id.listView);
+
+        //Set the adapter on the ListView
+        lv.setAdapter(adapter);
     }
 }
